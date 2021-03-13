@@ -3,8 +3,6 @@ import {spawnSync} from "child_process";
 import yargs from "yargs";
 import fs from "fs";
 import path from "path";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const {version} = require("../package.json");
 
 function spawn(command: string, args: string[], errorMessage: string, ignore: boolean = false) {
     const isWindows = process.platform === "win32";
@@ -28,7 +26,7 @@ function checkCodeStyle() {
 
 function lint() {
     console.info(chalk`{green.bold [task]} {white.bold lint}`);
-    return spawn("eslint", ["{src,test}/**/*.{ts,tsx}"], "lint failed, please fix");
+    return spawn("eslint", ["{src}/**/*.{ts,tsx}"], "lint failed, please fix");
 }
 
 function cleanup() {
@@ -44,6 +42,8 @@ function compile() {
 function commit() {
     console.info(chalk`{green.bold [task]} {white.bold commit to git}`);
     spawn("git", ["add", "."], "cannot add changes to git tree", true);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const {version} = require("../package.json");
     return spawn("git", ["commit", "-m", `[SYSTEM]: ${version}: build package`], "cannot commit changes", true);
 }
 
