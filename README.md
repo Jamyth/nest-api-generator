@@ -270,7 +270,7 @@ new NestAPIGenerator({
 
 **Modify package.json**
 
-```json
+```js
 {
     "script": {
         // "build": "nest build",
@@ -284,7 +284,7 @@ new NestAPIGenerator({
 
 **Modify tsconfig.build.json**
 
-```json
+```js
 {
     "extends": "./tsconfig.json",
     //   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
