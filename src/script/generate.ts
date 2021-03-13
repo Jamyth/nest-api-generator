@@ -183,7 +183,7 @@ export class NestAPIGenerator {
             } else {
                 if (type.type === "enum") {
                     const keys = Object.keys(type.body);
-                    const body = keys.map((curr) => `${curr} = ${curr}`);
+                    const body = keys.map((curr) => `${curr} = '${curr}'`);
                     definition.definition = `{${body.join(",")}}`;
                     this.types.push(definition);
                 } else {
@@ -213,7 +213,10 @@ export class NestAPIGenerator {
         const content = JSON.stringify({
             services: this.services,
             types: this.types,
-        });
+        })
+            .replace(/"/g, "")
+            .replace(/\\/g, "")
+            .replace(/\//g, "");
         console.log(
             JSON.stringify(
                 {
@@ -223,6 +226,9 @@ export class NestAPIGenerator {
                 null,
                 4
             )
+                .replace(/"/g, "")
+                .replace(/\\/g, "")
+                .replace(/\//g, "")
         );
         const _path = path.join(this.rootDirectory, "/nest-api");
         fs.mkdirSync(_path, {recursive: true});
