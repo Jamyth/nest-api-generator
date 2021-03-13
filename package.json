@@ -1,35 +1,35 @@
 {
-  "name": "nest-api-generator",
-  "version": "1.2.4",
-  "main": "./dist/index.js",
-  "license": "MIT",
-  "keyword": [
-    "nestjs",
-    "api",
-    "nodejs",
-    "api generator",
-    "backend"
-  ],
-  "devDependencies": {
-    "@types/node": "^14.14.34",
-    "@types/yargs": "^16.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.17.0",
-    "@typescript-eslint/parser": "^4.17.0",
-    "eslint": "^7.22.0",
-    "eslint-config-prettier": "^8.1.0",
-    "prettier": "^2.2.1",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.3"
-  },
-  "dependencies": {
-    "@nestjs/common": "^7.6.13",
-    "chalk": "^4.1.0",
-    "reflect-metadata": "^0.1.13",
-    "rxjs": "^6.6.6",
-    "yargs": "^16.2.0"
-  },
-  "scripts": {
-    "build": "ts-node --project ./config/tsconfig.build.json ./script/build.ts",
-    "test": "ts-node ./src/test.ts"
-  }
+    "name": "nest-api-generator",
+    "version": "1.2.6",
+    "main": "./dist/index.js",
+    "license": "MIT",
+    "keyword": [
+        "nestjs",
+        "api",
+        "nodejs",
+        "api generator",
+        "backend"
+    ],
+    "devDependencies": {
+        "@types/node": "^14.14.34",
+        "@types/yargs": "^16.0.0",
+        "@typescript-eslint/eslint-plugin": "^4.17.0",
+        "@typescript-eslint/parser": "^4.17.0",
+        "eslint": "^7.22.0",
+        "eslint-config-prettier": "^8.1.0",
+        "prettier": "^2.2.1",
+        "ts-node": "^9.1.1",
+        "typescript": "^4.2.3"
+    },
+    "dependencies": {
+        "@nestjs/common": "^7.6.13",
+        "chalk": "^4.1.0",
+        "reflect-metadata": "^0.1.13",
+        "rxjs": "^6.6.6",
+        "yargs": "^16.2.0"
+    },
+    "scripts": {
+        "build": "ts-node --project ./config/tsconfig.build.json ./script/build.ts",
+        "test": "ts-node ./src/test.ts"
+    }
 }

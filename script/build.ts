@@ -53,17 +53,14 @@ function push() {
     return spawn("git", ["push", "-u", "origin", "master"], "cannot push to github", true);
 }
 
-function publish() {
+function updatePackageJSON() {
     console.info(chalk`{green.bold [task]} {white.bold publish to NPM}`);
     const location = path.join(__dirname, "../package.json");
     const rawPackageJSON = fs.readFileSync(location, {encoding: "utf-8"});
     const parsedJSON = JSON.parse(rawPackageJSON);
     const version = parseInt(parsedJSON.version[parsedJSON.version.length - 1]) + 1;
     parsedJSON.version = parsedJSON.version.substring(0, parsedJSON.version.length - 1) + version;
-    console.log(parsedJSON.version);
     fs.writeFileSync(location, JSON.stringify(parsedJSON, null, 4), {encoding: "utf-8"});
-
-    // return spawn("git", ["push", "-u", "origin", "master"], "cannot push to github", true);
 }
 
 function build() {
@@ -76,9 +73,9 @@ function build() {
 
     cleanup();
     compile();
+    updatePackageJSON();
     commit();
     push();
-    publish();
 }
 
 build();
