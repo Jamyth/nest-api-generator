@@ -1,6 +1,4 @@
-# **Nest API Generator** &middot; [![Github license](https://img.shields.io/badge/license-MIT-blue.svg)]() [![npm version](https://img.shields.io/npm/v/nest-api-generator)](https://npmjs.com/package/nest-api-generator)
-
-//![Downloads](https://img.shields.io/npm/dw/nest-api-generator.svg?color=blue)
+# **Nest API Generator** &middot; [![Github license](https://img.shields.io/badge/license-MIT-blue.svg)]() [![npm version](https://img.shields.io/npm/v/nest-api-generator)](https://npmjs.com/package/nest-api-generator)![Downloads](https://img.shields.io/npm/dw/nest-api-generator.svg?color=blue)
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
