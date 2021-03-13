@@ -226,6 +226,10 @@ export class KeyboardLayout {}
 
 Since all controller methods might return a Promise, which TypeScript Reflect does not understand what is inside the promise, so here is the ReturnType decorator
 
+**Props**
+
+-   type (TypeClass) Empty for void
+
 ```ts
 // Controller
 import {Get, ReturnType, Param} from "nest-api-generator";
