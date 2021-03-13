@@ -15,7 +15,7 @@ jobs:
             - name: Install all Dependencies
               run: yarn
             - name: Build the package
-              run: yarn build
+              run: yarn tsc
             - name: Publish new Version of nest-api-generator to NPM
               run: npm publish
               env:
