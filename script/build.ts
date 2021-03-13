@@ -2,6 +2,7 @@ import chalk from "chalk";
 import {spawnSync} from "child_process";
 import yargs from "yargs";
 import fs from "fs";
+import path from "path";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const {version} = require("../package.json");
 
@@ -54,11 +55,12 @@ function push() {
 
 function publish() {
     console.info(chalk`{green.bold [task]} {white.bold publish to NPM}`);
-    const rawPackageJSON = fs.readFileSync("../package.json", {encoding: "utf-8"});
+    const location = path.join(__dirname, "../package.json");
+    const rawPackageJSON = fs.readFileSync(location, {encoding: "utf-8"});
     const parsedJSON = JSON.parse(rawPackageJSON);
     const version = parseInt(parsedJSON.version[parsedJSON.version.length - 1]) + 1;
     parsedJSON.version = parsedJSON.version.subString(0, parsedJSON.version.length - 1) + version;
-    fs.writeFileSync("../package.json", JSON.stringify(parsedJSON, null, 4), {encoding: "utf-8"});
+    fs.writeFileSync(location, JSON.stringify(parsedJSON, null, 4), {encoding: "utf-8"});
 
     // return spawn("git", ["push", "-u", "origin", "master"], "cannot push to github", true);
 }
