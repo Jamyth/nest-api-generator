@@ -26,7 +26,7 @@ function checkCodeStyle() {
 
 function lint() {
     console.info(chalk`{green.bold [task]} {white.bold lint}`);
-    return spawn("eslint", ["{src}/**/*.{ts,tsx}"], "lint failed, please fix");
+    return spawn("eslint", ["src/**/*.{ts,tsx}"], "lint failed, please fix");
 }
 
 function cleanup() {
