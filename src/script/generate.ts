@@ -126,8 +126,11 @@ export class NestAPIGenerator {
             return accumulated.concat(current);
         };
 
-        const getTransformDataType = ({requestType, responseType}: ControllerMethod): TransformDataType[] => {
+        const getTransformDataType = ({requestType, responseType, pathParamInterface}: ControllerMethod): TransformDataType[] => {
             const result: TransformDataType[] = [];
+            if (pathParamInterface) {
+                result.push(pathParamInterface);
+            }
             if (requestType && typeof requestType !== "string") {
                 result.push(requestType);
             }
@@ -144,20 +147,28 @@ export class NestAPIGenerator {
                 name: _prefix + type.name,
                 type: type.type,
             } as TypeDefinition;
+            const nullableKeys = type.nullableKeys;
             if (Object.values(type.body).some((_) => typeof _ !== "string")) {
                 const keys = Object.keys(type.body);
                 const keysWithPrimitiveTypes = keys.filter((_) => typeof type.body[_] === "string");
                 const keysWithOtherType = keys.filter((_) => typeof type.body[_] !== "string");
-
                 const namesOfOtherType = keysWithOtherType.map((_) => {
                     const dataType: TransformDataType = type.body[_];
+                    const isNullable = nullableKeys.includes(_);
+                    let name: string = "";
                     if (dataType.type === "interface") {
-                        return type.name + "$" + dataType.name + (dataType.isArray ? "[]" : "");
+                        name = type.name + "$" + dataType.name + (dataType.isArray ? "[]" : "");
+                        return name + (isNullable ? " | null" : "");
                     }
-                    return dataType.name;
+                    name = dataType.name;
+                    return name + (isNullable ? " | null" : "");
                 });
 
-                const object: any = keysWithPrimitiveTypes.reduce((acc, curr) => Object.assign(acc, {[curr]: type.body[curr]}), {});
+                const object: any = keysWithPrimitiveTypes.reduce((acc, curr) => {
+                    const isNullable = nullableKeys.includes(curr);
+                    console.log(curr);
+                    return Object.assign(acc, {[curr]: type.body[curr] + (isNullable ? "| null" : "")});
+                }, {});
                 keysWithOtherType.forEach((_, i) => {
                     object[_] = namesOfOtherType[i];
                 });
@@ -176,7 +187,14 @@ export class NestAPIGenerator {
                     definition.definition = `{${body.join(",")}}`;
                     this.types.push(definition);
                 } else {
-                    definition.definition = JSON.stringify(type.body);
+                    const entries = Object.entries(type.body);
+                    const _definition = entries.reduce((acc, [key, value]) => {
+                        const isNullable = nullableKeys.includes(key);
+                        return Object.assign(acc, {
+                            [key]: value + (isNullable ? "| null" : ""),
+                        });
+                    }, {});
+                    definition.definition = JSON.stringify(_definition);
                     this.types.push(definition);
                 }
             }

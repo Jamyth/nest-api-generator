@@ -25,6 +25,8 @@ export function createControllerMethod(target: any, propertyKey: string | symbol
         _parameters = null;
     }
 
+    let pathParamInterface: any | null = null;
+
     const requestType = _parameters === null ? null : _parameters.filter((_, i) => !pathParams.map((_) => _.index).includes(i))?.[0] ?? null;
 
     let methodPathParams: {name: string; type: string}[] = [];
@@ -32,8 +34,9 @@ export function createControllerMethod(target: any, propertyKey: string | symbol
     for (let i = 0; i < pathParams.length; i++) {
         const self = pathParams[i];
         const parameter = (_parameters as (string | TransformDataType)[])[self.index];
-        const type = typeof parameter === "string" ? parameter : parameter.name;
+        const nullableKeys = typeof parameter === "string" ? [] : parameter.nullableKeys;
         const key = self.property;
+        const type = (typeof parameter === "string" ? parameter : parameter.name) + (key ? (nullableKeys.includes(key) ? "| null" : "") : "");
 
         if (key) {
             methodPathParams.push({name: key, type});
@@ -44,6 +47,7 @@ export function createControllerMethod(target: any, propertyKey: string | symbol
                 console.error(`[NestAPIGenerator]: Unknown path parameters -- ${methodName as string}`);
                 continue;
             }
+            pathParamInterface = parameter;
             const keys = Object.keys(body);
             const values: (string | TransformDataType)[] = Object.values(body);
             methodPathParams = keys.map((_, i) => {
@@ -69,6 +73,7 @@ export function createControllerMethod(target: any, propertyKey: string | symbol
         name: methodName as string,
         path: _path,
         pathParams: methodPathParams,
+        pathParamInterface,
         requestType,
         responseType: returnType,
     };

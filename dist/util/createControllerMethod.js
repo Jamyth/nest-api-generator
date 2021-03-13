@@ -22,13 +22,15 @@ function createControllerMethod(target, propertyKey, path, requestMethod) {
     else {
         _parameters = null;
     }
+    let pathParamInterface = null;
     const requestType = _parameters === null ? null : _parameters.filter((_, i) => !pathParams.map((_) => _.index).includes(i))?.[0] ?? null;
     let methodPathParams = [];
     for (let i = 0; i < pathParams.length; i++) {
         const self = pathParams[i];
         const parameter = _parameters[self.index];
-        const type = typeof parameter === "string" ? parameter : parameter.name;
+        const nullableKeys = typeof parameter === "string" ? [] : parameter.nullableKeys;
         const key = self.property;
+        const type = (typeof parameter === "string" ? parameter : parameter.name) + (key ? (nullableKeys.includes(key) ? "| null" : "") : "");
         if (key) {
             methodPathParams.push({ name: key, type });
         }
@@ -38,6 +40,7 @@ function createControllerMethod(target, propertyKey, path, requestMethod) {
                 console.error(`[NestAPIGenerator]: Unknown path parameters -- ${methodName}`);
                 continue;
             }
+            pathParamInterface = parameter;
             const keys = Object.keys(body);
             const values = Object.values(body);
             methodPathParams = keys.map((_, i) => {
@@ -60,6 +63,7 @@ function createControllerMethod(target, propertyKey, path, requestMethod) {
         name: methodName,
         path: _path,
         pathParams: methodPathParams,
+        pathParamInterface,
         requestType,
         responseType: returnType,
     };

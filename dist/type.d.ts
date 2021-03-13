@@ -3,6 +3,7 @@ export interface TransformDataType {
     name: string;
     type: DefinitionType;
     isArray: boolean;
+    nullableKeys: string[];
     body: Record<string, any>;
 }
 export declare enum RequestMethod {
@@ -23,6 +24,7 @@ export interface ControllerMethod {
         name: string;
         type: string;
     }[];
+    pathParamInterface: any | null;
     requestType: any | null;
     responseType: any | null;
 }

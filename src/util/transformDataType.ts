@@ -14,6 +14,8 @@ export function transformDataType(dataType: any, isArray: boolean = false): stri
             return isArray ? name.toLowerCase() + "[]" : name.toLowerCase();
     }
     // Expect all data type here can be referenced by the @Property decorator
+
+    const nullableKeys = Reflect.getMetadata(MetaData.nullableProperty, dataType) ?? [];
     const type = Reflect.getMetadata(MetaData.classType, dataType) ?? "interface";
     const object: Record<string, any> | undefined = Reflect.getMetadata(MetaData.classProperty, dataType);
     if (object && name) {
@@ -21,6 +23,7 @@ export function transformDataType(dataType: any, isArray: boolean = false): stri
             name,
             type,
             isArray,
+            nullableKeys,
             body: object,
         };
         return transformedDataType;

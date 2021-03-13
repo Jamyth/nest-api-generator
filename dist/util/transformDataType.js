@@ -14,6 +14,7 @@ function transformDataType(dataType, isArray = false) {
         case "Date":
             return isArray ? name.toLowerCase() + "[]" : name.toLowerCase();
     }
+    const nullableKeys = Reflect.getMetadata(MetaData_1.MetaData.nullableProperty, dataType) ?? [];
     const type = Reflect.getMetadata(MetaData_1.MetaData.classType, dataType) ?? "interface";
     const object = Reflect.getMetadata(MetaData_1.MetaData.classProperty, dataType);
     if (object && name) {
@@ -21,6 +22,7 @@ function transformDataType(dataType, isArray = false) {
             name,
             type,
             isArray,
+            nullableKeys,
             body: object,
         };
         return transformedDataType;

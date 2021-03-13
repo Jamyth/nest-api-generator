@@ -6,4 +6,5 @@ export declare const MetaData: Readonly<{
     classProperty: string;
     classType: string;
     methodParameter: string;
+    nullableProperty: string;
 }>;

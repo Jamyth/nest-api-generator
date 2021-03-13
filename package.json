@@ -1,6 +1,6 @@
 {
     "name": "nest-api-generator",
-    "version": "1.2.8",
+    "version": "1.2.9",
     "main": "./dist/index.js",
     "license": "MIT",
     "keyword": [
@@ -30,6 +30,6 @@
     },
     "scripts": {
         "build": "ts-node --project ./config/tsconfig.build.json ./script/build.ts",
-        "test": "ts-node ./src/test.ts"
+        "test": "ts-node --project ./test/tsconfig.json ./test/index.ts"
     }
 }

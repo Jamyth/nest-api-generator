@@ -4,6 +4,7 @@ export interface TransformDataType {
     name: string;
     type: DefinitionType;
     isArray: boolean;
+    nullableKeys: string[];
     body: Record<string, any>;
 }
 
@@ -23,6 +24,7 @@ export interface ControllerMethod {
     name: string;
     path: string;
     pathParams: {name: string; type: string}[];
+    pathParamInterface: any | null;
     requestType: any | null;
     responseType: any | null;
 }
