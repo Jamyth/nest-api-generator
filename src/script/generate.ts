@@ -58,18 +58,7 @@ export class NestAPIGenerator {
             this.getControllers();
             this.generateService();
             this.generateTypeDefinitions();
-
-            console.log(
-                JSON.stringify(
-                    {
-                        services: this.services,
-                        types: this.types,
-                    },
-                    null,
-                    4
-                )
-            );
-            // this.writeFile();
+            this.writeFile();
         } catch (error) {
             console.log(error);
             process.exit(1);
