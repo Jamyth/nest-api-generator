@@ -12,6 +12,7 @@ function spawn(command: string, args: string[], errorMessage: string) {
         process.exit(1);
     }
     if (result.status !== 0) {
+        console.log(result);
         console.error(chalk`{red.bold ${errorMessage}}`);
         console.error(`non-zero exit code returned, code=${result.status}, command=${command} ${args.join(" ")}`);
         process.exit(1);
