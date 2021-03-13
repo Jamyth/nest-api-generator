@@ -4,14 +4,14 @@ import yargs from "yargs";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const {version} = require("../package.json");
 
-function spawn(command: string, args: string[], errorMessage: string) {
+function spawn(command: string, args: string[], errorMessage: string, ignore: boolean = false) {
     const isWindows = process.platform === "win32";
     const result = spawnSync(isWindows ? command + ".cmd" : command, args, {stdio: "inherit"});
     if (result.error) {
         console.error(result.error);
         process.exit(1);
     }
-    if (result.status !== 0) {
+    if (result.status !== 0 && !ignore) {
         console.log(result);
         console.error(chalk`{red.bold ${errorMessage}}`);
         console.error(`non-zero exit code returned, code=${result.status}, command=${command} ${args.join(" ")}`);
@@ -41,14 +41,14 @@ function compile() {
 
 function commit() {
     console.info(chalk`{green.bold [task]} {white.bold commit to git}`);
-    spawn("git", ["add", "."], "cannot add changes to git tree");
-    return spawn("git", ["commit", "-m", `[SYSTEM]: ${version}: build package`], "cannot commit changes");
+    spawn("git", ["add", "."], "cannot add changes to git tree", true);
+    return spawn("git", ["commit", "-m", `[SYSTEM]: ${version}: build package`], "cannot commit changes", true);
 }
 
 function push() {
     console.info(chalk`{green.bold [task]} {white.bold push to github}`);
-    spawn("git", ["pull", "--rebase", "--autostash"], "cannot pull changes from upstream");
-    return spawn("git", ["push", "-u", "origin", "master"], "cannot push to github");
+    spawn("git", ["pull", "--rebase", "--autostash"], "cannot pull changes from upstream", true);
+    return spawn("git", ["push", "-u", "origin", "master"], "cannot push to github", true);
 }
 
 function build() {
