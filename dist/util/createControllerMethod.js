@@ -8,7 +8,7 @@ function createControllerMethod(target, propertyKey, path, requestMethod) {
     const methodName = propertyKey;
     let _path = path ?? "/";
     _path = Array.isArray(_path) ? _path.join("/") : _path;
-    const pathParams = Reflect.getMetadata(MetaData_1.MetaData.methodParameter, target.constructor);
+    const pathParams = Reflect.getMetadata(MetaData_1.MetaData.methodParameter, target.constructor) ?? [];
     const parameters = Reflect.getMetadata(MetaData_1.MetaData.paramTypes, target, propertyKey);
     const _parameters = parameters.length ? parameters.map((_) => util_1.Utility.transformDataType(_)) : null;
     const requestType = _parameters === null ? null : _parameters.filter((_, i) => !pathParams.map((_) => _.index).includes(i))?.[0] ?? null;

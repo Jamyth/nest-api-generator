@@ -8,7 +8,7 @@ export function createControllerMethod(target: any, propertyKey: string | symbol
     let _path = path ?? "/";
     _path = Array.isArray(_path) ? _path.join("/") : _path;
 
-    const pathParams: MethodParameter[] = Reflect.getMetadata(MetaData.methodParameter, target.constructor);
+    const pathParams: MethodParameter[] = Reflect.getMetadata(MetaData.methodParameter, target.constructor) ?? [];
 
     const parameters: any[] = Reflect.getMetadata(MetaData.paramTypes, target, propertyKey);
 
