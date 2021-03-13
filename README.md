@@ -33,6 +33,7 @@ A Nest JS API Generation tool, aiming to provide the complete API information fo
         -   ReturnType
 -   Nest API Generation Script
 -   API fetching Endpoint Setup
+-   Endpoint Response
 
 ## **What you can achieve from this package**
 
@@ -320,3 +321,37 @@ export class AppModule {}
 ```
 
 <hr>
+
+## **Endpoint Response**
+
+Here is the structure of the response from
+
+**Endpoint**
+`http://localhost:3000/$globalPrefix/_system/api`
+
+```ts
+export interface APIDefinition {
+    services: Service[];
+    types: TypeDefinition[];
+}
+
+interface Service {
+    name: string;
+    operations: Operation[];
+}
+
+interface Operation {
+    name: string;
+    method: RequestMethod;
+    path: string;
+    pathParams: {name: string; type: string}[];
+    responseType: string;
+    requestType: null | string;
+}
+
+interface TypeDefinition {
+    name: string;
+    type: DefinitionType;
+    definition: string;
+}
+```
