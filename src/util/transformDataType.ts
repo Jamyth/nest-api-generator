@@ -1,7 +1,7 @@
 import {MetaData} from "../MetaData";
 import type {TransformDataType} from "../type";
 
-export function transformDataType(dataType: any, isArray: boolean = false): string | TransformDataType {
+export function transformDataType(dataType: any, isArray: boolean = false): string | TransformDataType | undefined {
     const name: string | undefined = dataType?.name || undefined;
     if (dataType === null) {
         return "void";
@@ -25,5 +25,4 @@ export function transformDataType(dataType: any, isArray: boolean = false): stri
         };
         return transformedDataType;
     }
-    throw new Error(`Unknown data type ${dataType}`);
 }

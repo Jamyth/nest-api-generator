@@ -13,7 +13,17 @@ export function createControllerMethod(target: any, propertyKey: string | symbol
     const parameters: any[] = Reflect.getMetadata(MetaData.paramTypes, target, propertyKey);
 
     // Transform every parameters
-    const _parameters = parameters.length ? parameters.map((_) => Utility.transformDataType(_)) : null;
+    let _parameters: (string | TransformDataType)[] | null = [];
+    if (parameters.length) {
+        parameters.forEach((_) => {
+            const type = Utility.transformDataType(_);
+            if (type) {
+                _parameters?.push(type);
+            }
+        });
+    } else {
+        _parameters = null;
+    }
 
     const requestType = _parameters === null ? null : _parameters.filter((_, i) => !pathParams.map((_) => _.index).includes(i))?.[0] ?? null;
 
@@ -49,6 +59,10 @@ export function createControllerMethod(target: any, propertyKey: string | symbol
     }
 
     const returnType = Utility.transformDataType(Reflect.getMetadata(MetaData.controllerReturnType, target, propertyKey));
+
+    if (!returnType) {
+        throw new Error("ReturnType cannot be undefined");
+    }
 
     const method: ControllerMethod = {
         method: requestMethod,

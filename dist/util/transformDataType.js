@@ -25,6 +25,5 @@ function transformDataType(dataType, isArray = false) {
         };
         return transformedDataType;
     }
-    throw new Error(`Unknown data type ${dataType}`);
 }
 exports.transformDataType = transformDataType;
