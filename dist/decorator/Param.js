@@ -5,13 +5,16 @@ const common_1 = require("@nestjs/common");
 const MetaData_1 = require("../MetaData");
 function Param(property, ...pipes) {
     return (target, propertyKey, parameterIndex) => {
-        const list = Reflect.getMetadata(MetaData_1.MetaData.methodParameter, target.constructor) || [];
+        var _a;
+        const records = Reflect.getMetadata(MetaData_1.MetaData.methodParameter, target.constructor) || {};
+        const list = (_a = records[propertyKey]) !== null && _a !== void 0 ? _a : [];
         const param = {
             property: typeof property === "string" ? property : null,
             index: parameterIndex,
         };
         list.push(param);
-        Reflect.defineMetadata(MetaData_1.MetaData.methodParameter, list, target.constructor);
+        records[propertyKey] = list;
+        Reflect.defineMetadata(MetaData_1.MetaData.methodParameter, records, target.constructor);
         if (!property && !pipes.length) {
             common_1.Param()(target, propertyKey, parameterIndex);
         }

@@ -7,15 +7,17 @@ export function Param(property: string, ...pipes: (Type<PipeTransform> | PipeTra
 export function Param(...pipes: (Type<PipeTransform> | PipeTransform)[]): ParameterDecorator;
 export function Param(property?: string | Type<PipeTransform> | PipeTransform, ...pipes: (Type<PipeTransform> | PipeTransform)[]): ParameterDecorator {
     return (target, propertyKey, parameterIndex) => {
-        const list: MethodParameter[] = Reflect.getMetadata(MetaData.methodParameter, target.constructor) || [];
-
+        const records: Record<string, MethodParameter[]> = Reflect.getMetadata(MetaData.methodParameter, target.constructor) || {};
+        const list = records[propertyKey as string] ?? [];
         const param: MethodParameter = {
             property: typeof property === "string" ? property : null,
             index: parameterIndex,
         };
-        list.push(param);
 
-        Reflect.defineMetadata(MetaData.methodParameter, list, target.constructor);
+        list.push(param);
+        records[propertyKey as string] = list;
+
+        Reflect.defineMetadata(MetaData.methodParameter, records, target.constructor);
 
         if (!property && !pipes.length) {
             NestParam()(target, propertyKey, parameterIndex);
