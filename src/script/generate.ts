@@ -213,10 +213,10 @@ export class NestAPIGenerator {
         const content = JSON.stringify({
             services: this.services,
             types: this.types,
-        })
-            .replace(/"/g, "")
-            .replace(/\\/g, "")
-            .replace(/\//g, "");
+        });
+        // .replace(/"/g, "")
+        // .replace(/\\/g, "")
+        // .replace(/\//g, "");
         console.log(
             JSON.stringify(
                 {
