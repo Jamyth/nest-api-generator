@@ -83,7 +83,13 @@ export class NestAPIGenerator {
             throw new Error("No Imports found in App Module");
         }
         const modules: any[] = imports.filter((_) => Reflect.getMetadata(MetaData.moduleType, _) !== undefined);
-        const controllers = modules.map((_) => Reflect.getMetadata("controllers", _)[0]);
+        const controllers: any[] = [];
+        modules.forEach((_) => {
+            const controller = Reflect.getMetadata("controllers", _)[0];
+            if (controller) {
+                controllers.push(controller);
+            }
+        });
         this.controllers = controllers;
     }
 
