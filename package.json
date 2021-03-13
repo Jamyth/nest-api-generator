@@ -3,6 +3,13 @@
   "version": "1.2.0",
   "main": "./dist/index.js",
   "license": "MIT",
+  "keyword": [
+    "nestjs",
+    "api",
+    "nodejs",
+    "api generator",
+    "backend"
+  ],
   "devDependencies": {
     "@types/node": "^14.14.34",
     "@types/yargs": "^16.0.0",
