@@ -3,6 +3,10 @@
     "version": "1.2.13",
     "main": "./dist/index.js",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Jamyth/nest-api-generator"
+    },
     "keyword": [
         "nestjs",
         "api",
