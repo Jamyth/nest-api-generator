@@ -146,12 +146,14 @@ Here are some decorators:
 -   Enumeration
 -   ReturnType
 
-### **Property**
+### **Property** & **Nullable**
 
 Since Typescript Reflect does not recognize `interface` and `enum`,
 all interface and enum are declared as `class`
 
 This is a `key decorator` in order to make the api generation works.
+
+> Nullable is a decorator to tell the specified field can be null
 
 **Props**
 
@@ -166,12 +168,17 @@ import {Property} from "nest-api-generator";
 // From
 export interface GetOneCustomerRequest {
     user_id: number;
+    age: number | null;
 }
 
 // To
 export class GetOneCustomerRequest {
     @Property("user_id", Number)
     user_id: number;
+
+    @Nullable()
+    @Property("age", Number)
+    age: number | null;
 }
 
 // Customer
@@ -219,7 +226,11 @@ export enum KeyboardLayout {
 
 // To
 @Enumeration()
-export class KeyboardLayout {}
+export class KeyboardLayout {
+    static readonly ALICE = "ALICE";
+    static readonly ERGO = "ERGO";
+    static readonly TKL = "TKL";
+}
 ```
 
 ### **ReturnType**
