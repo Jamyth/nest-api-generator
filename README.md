@@ -1,8 +1,8 @@
-# **Nest API Generator** &middot; [![Github license](https://img.shields.io/badge/license-MIT-blue.svg)]() [![npm version](https://img.shields.io/npm/v/nest-api-generator)](https://npmjs.com/package/nest-api-generator)![Downloads](https://img.shields.io/npm/dw/nest-api-generator.svg?color=blue)
-
+<!-- # **Nest API Generator** &middot; [![Github license](https://img.shields.io/badge/license-MIT-blue.svg)]() [![npm version](https://img.shields.io/npm/v/nest-api-generator)](https://npmjs.com/package/nest-api-generator)![Downloads](https://img.shields.io/npm/dw/nest-api-generator.svg?color=blue) -->
+<!--
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+</p> -->
 
 <p>
     <h3 align="center">THIS IS NOT AN OFFICIAL PACKAGE</h3>
@@ -42,6 +42,99 @@ A Nest JS API Generation tool, aiming to provide the complete API information fo
 > But it would also be a nightmare to backend-developer that they might have to build an endpoint with the complete API and the interfaces.
 
 > You can satisfy both front-end and back-end with `this` package.
+
+### **Example**
+
+> type.ts
+
+```ts
+import {Property, Nullable} from "nest-api-generator";
+
+export class User {
+    @Property("name", String)
+    name: string;
+
+    @Nullable()
+    @Property("age", Number)
+    age: number | null;
+}
+
+export class GetUserAJAXResponse {
+    @Property("user", User, true)
+    // true for is Array
+    user: User[];
+}
+```
+
+> Controller.ts & Module.ts
+
+```ts
+// Controller.ts
+import {Controller} from "@nestjs/common";
+import {Get, ReturnType} from "nest-api-generator";
+import {GetUserAJAXResponse} from "type.ts";
+
+@Controller("user")
+export class UserController {
+    constructor(private readonly service: Service) {}
+
+    @Get("/")
+    @ReturnType(GetUserAJAXResponse)
+    async getUsers(): Promise<GetUserAJAXResponse> {
+        return this.service.getUsers();
+    }
+}
+
+// Module.ts
+import {Module} from "nest-api-generator";
+import {UserController} from "controller.ts";
+
+@Module({
+    controllers: [UserController],
+})
+export class UserModule {}
+```
+
+**After API Generation**
+
+> api.txt
+
+```json
+{
+    "services": [
+        {
+            "name": "UserAJAXService",
+            "operations": [
+                {
+                    "name": "getUsers",
+                    "method": "GET",
+                    "path": "user/",
+                    "pathParams": [],
+                    "responseType": "GetUserAJAXResponse",
+                    "requestType": null
+                }
+            ]
+        }
+    ],
+    "types": [
+        {
+            "name": "GetUserAJAXResponse",
+            "type": "interface",
+            "definition": "{
+                user: GetUserAJAXResponse$User[];
+            }"
+        },
+        {
+            "name": "GetUserAJAXResponse$User",
+            "type": "interface",
+            "definition": "{
+                name: string;
+                age: number | null
+            }"
+        }
+    ]
+}
+```
 
 <hr>
 
