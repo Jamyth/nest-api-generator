@@ -34,7 +34,7 @@ export function createControllerMethod(target: any, propertyKey: string | symbol
     for (let i = 0; i < pathParams.length; i++) {
         const self = pathParams[i];
         const parameter = (_parameters as (string | TransformDataType)[])[self.index];
-        const nullableKeys = typeof parameter === "string" ? [] : parameter.nullableKeys;
+        const nullableKeys = typeof parameter === "string" ? [] : parameter?.nullableKeys ?? [];
         const key = self.property;
         const type = (typeof parameter === "string" ? parameter : parameter.name) + (key ? (nullableKeys.includes(key) ? "| null" : "") : "");
 
