@@ -7,6 +7,9 @@ class Request {
     @Property("pageIndex", Number)
     pageIndex: number;
 }
+class IRequest {
+    pageIndex: number;
+}
 
 class Customer {
     @Property("name", String)
@@ -26,11 +29,11 @@ class Response {
 export class MyController {
     @Get("/")
     @ReturnType(Response)
-    testNullable(gogo: number, @Param() request: Request) {
+    testNullable(gogo: IRequest, @Param("path") request: string) {
         return;
     }
 
-    @Get("/")
+    @Get("/something")
     @ReturnType(Response)
     test(request: number) {
         return;

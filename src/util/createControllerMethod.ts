@@ -13,13 +13,11 @@ export function createControllerMethod(target: any, propertyKey: string | symbol
     const parameters: any[] = Reflect.getMetadata(MetaData.paramTypes, target, propertyKey);
 
     // Transform every parameters
-    let _parameters: (string | TransformDataType)[] | null = [];
+    let _parameters: (string | TransformDataType | undefined)[] | null = [];
     if (parameters.length) {
         parameters.forEach((_) => {
             const type = Utility.transformDataType(_);
-            if (type) {
-                _parameters?.push(type);
-            }
+            _parameters?.push(type);
         });
     } else {
         _parameters = null;
