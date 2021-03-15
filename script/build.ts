@@ -1,23 +1,6 @@
 import chalk from "chalk";
-import {spawnSync} from "child_process";
+import {spawn} from "./spawn";
 import yargs from "yargs";
-import fs from "fs";
-import path from "path";
-
-function spawn(command: string, args: string[], errorMessage: string, ignore: boolean = false) {
-    const isWindows = process.platform === "win32";
-    const result = spawnSync(isWindows ? command + ".cmd" : command, args, {stdio: "inherit"});
-    if (result.error) {
-        console.error(result.error);
-        process.exit(1);
-    }
-    if (result.status !== 0 && !ignore) {
-        console.log(result);
-        console.error(chalk`{red.bold ${errorMessage}}`);
-        console.error(`non-zero exit code returned, code=${result.status}, command=${command} ${args.join(" ")}`);
-        process.exit(1);
-    }
-}
 
 function checkCodeStyle() {
     console.info(chalk`{green.bold [task]} {white.bold check code style}`);
@@ -39,30 +22,6 @@ function compile() {
     return spawn("tsc", ["-p", "config/tsconfig.json"], "compile failed, please fix");
 }
 
-function commit() {
-    console.info(chalk`{green.bold [task]} {white.bold commit to git}`);
-    spawn("git", ["add", "."], "cannot add changes to git tree", true);
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const {version} = require("../package.json");
-    return spawn("git", ["commit", "-m", `[SYSTEM]: ${version}: build package`], "cannot commit changes", true);
-}
-
-function push() {
-    console.info(chalk`{green.bold [task]} {white.bold push to github}`);
-    spawn("git", ["pull", "--rebase", "--autostash"], "cannot pull changes from upstream", true);
-    return spawn("git", ["push", "-u", "origin", "master"], "cannot push to github", true);
-}
-
-function updatePackageJSON() {
-    console.info(chalk`{green.bold [task]} {white.bold publish to NPM}`);
-    const location = path.join(__dirname, "../package.json");
-    const rawPackageJSON = fs.readFileSync(location, {encoding: "utf-8"});
-    const parsedJSON = JSON.parse(rawPackageJSON);
-    const version = parseInt(parsedJSON.version[parsedJSON.version.length - 1]) + 1;
-    parsedJSON.version = parsedJSON.version.substring(0, parsedJSON.version.length - 1) + version;
-    fs.writeFileSync(location, JSON.stringify(parsedJSON, null, 4), {encoding: "utf-8"});
-}
-
 function build() {
     const isFastMode = yargs.argv.mode === "fast";
 
@@ -73,9 +32,6 @@ function build() {
 
     cleanup();
     compile();
-    updatePackageJSON();
-    commit();
-    push();
 }
 
 build();

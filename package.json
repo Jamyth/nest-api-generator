@@ -1,6 +1,6 @@
 {
     "name": "nest-api-generator",
-    "version": "1.2.13",
+    "version": "1.2.14",
     "main": "dist/index.js",
     "license": "MIT",
     "repository": {
@@ -37,6 +37,8 @@
     },
     "scripts": {
         "build": "ts-node --project ./config/tsconfig.build.json ./script/build.ts",
-        "test": "ts-node --project ./test/tsconfig.json ./test/index.ts"
+        "build:prod": "yarn run build && ts-node -- project config/tsconfig.build.json  script/production.ts",
+        "test": "ts-node --project ./test/tsconfig.json ./test/index.ts",
+        "lint": "eslint src/**/*.ts"
     }
 }
