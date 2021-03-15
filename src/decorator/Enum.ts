@@ -1,7 +1,7 @@
-import {MetaData} from "../MetaData";
+import {ReflectUtil} from "../reflect";
 
 export function Enumeration(): ClassDecorator {
     return (target) => {
-        Reflect.defineMetadata(MetaData.classType, "enum", target);
+        ReflectUtil.defineEnum(target);
     };
 }
