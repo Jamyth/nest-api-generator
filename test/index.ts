@@ -4,7 +4,6 @@ import "reflect-metadata";
 import path from "path";
 
 class Request {
-    @Nullable()
     @Property("pageIndex", Number)
     pageIndex: number;
 }
@@ -27,7 +26,7 @@ class Response {
 export class MyController {
     @Get("/")
     @ReturnType(Response)
-    testNullable(@Param() request: Request) {
+    testNullable(gogo: number, @Param() request: Request) {
         return;
     }
 

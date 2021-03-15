@@ -33,10 +33,10 @@ export function createControllerMethod(target: any, propertyKey: string | symbol
     // Extract Path Params
     for (let i = 0; i < pathParams.length; i++) {
         const self = pathParams[i];
-        const parameter = (_parameters as (string | TransformDataType)[])[self.index];
+        const parameter: string | TransformDataType | undefined = (_parameters as (string | TransformDataType)[])[self.index];
         const nullableKeys = typeof parameter === "string" ? [] : parameter?.nullableKeys ?? [];
         const key = self.property;
-        const type = (typeof parameter === "string" ? parameter : parameter.name) + (key ? (nullableKeys.includes(key) ? "| null" : "") : "");
+        const type = (typeof parameter === "string" ? parameter : parameter?.name) + (key ? (nullableKeys.includes(key) ? "| null" : "") : "");
 
         if (key) {
             methodPathParams.push({name: key, type});
