@@ -25,8 +25,8 @@ export interface ControllerMethod {
     path: string;
     pathParams: {name: string; type: string}[];
     pathParamInterface: any | null;
-    requestType: any | null;
-    responseType: any | null;
+    requestType: (string | TransformDataType) | null;
+    responseType: string | TransformDataType;
 }
 
 export interface MethodParameter {

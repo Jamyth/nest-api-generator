@@ -90,10 +90,19 @@ export class NestAPIGenerator {
             return path.charAt(0).toUpperCase() + path.slice(1) + "AJAXService";
         };
 
-        const getOperation = ({method, name, path, requestType, responseType, pathParams}: ControllerMethod, moduleName: string): Operation => {
-            const _requestType = requestType === null ? null : typeof requestType === "string" ? requestType : requestType.isArray ? requestType.name + "[]" : requestType.name;
+        const getType = (type: string | TransformDataType): string => {
+            if (typeof type === "string") {
+                return type;
+            }
+            if (type.isArray) {
+                return type.name + "[]";
+            }
+            return type.name;
+        };
 
-            const _responseType = typeof responseType === "string" ? responseType : responseType.isArray ? responseType.name + "[]" : responseType.name;
+        const getOperation = ({method, name, path, requestType, responseType, pathParams}: ControllerMethod, moduleName: string): Operation => {
+            const _requestType = requestType === null ? null : getType(requestType);
+            const _responseType = getType(responseType);
 
             const _path = (this.globalPrefix.endsWith("/") ? this.globalPrefix : this.globalPrefix + "/") + moduleName + path;
             return {
@@ -106,15 +115,12 @@ export class NestAPIGenerator {
             };
         };
 
-        controllers.forEach((_) => {
-            console.info(chalk`{green.bold [NestAPIGenerator]} {white.bold generating type definitions}`);
+        controllers.forEach((_, i) => {
+            console.info(chalk`{green.bold [NestAPIGenerator]} {white.bold generating service ${_.name} (${i + 1})}`);
             const path = Reflect.getMetadata("path", _);
             const name = getServiceName(path);
             const methods: ControllerMethod[] = Reflect.getMetadata(MetaData.controllerMethod, _);
-            const operations: Operation[] = methods.map((_) => {
-                console.log(_);
-                return getOperation(_, path);
-            });
+            const operations: Operation[] = methods.map((_) => getOperation(_, path));
             this.services.push({
                 name,
                 operations,
@@ -150,11 +156,14 @@ export class NestAPIGenerator {
                 name: _prefix + type.name,
                 type: type.type,
             } as TypeDefinition;
+
             const nullableKeys = type.nullableKeys;
+
             if (Object.values(type.body).some((_) => typeof _ !== "string")) {
                 const keys = Object.keys(type.body);
                 const keysWithPrimitiveTypes = keys.filter((_) => typeof type.body[_] === "string");
                 const keysWithOtherType = keys.filter((_) => typeof type.body[_] !== "string");
+
                 const namesOfOtherType = keysWithOtherType.map((_) => {
                     const dataType: TransformDataType = type.body[_];
                     const isNullable = nullableKeys.includes(_);
@@ -169,14 +178,16 @@ export class NestAPIGenerator {
 
                 const object: any = keysWithPrimitiveTypes.reduce((acc, curr) => {
                     const isNullable = nullableKeys.includes(curr);
-                    console.log(curr);
-                    return Object.assign(acc, {[curr]: type.body[curr] + (isNullable ? "| null" : "")});
+                    return Object.assign(acc, {
+                        [curr]: type.body[curr] + (isNullable ? "| null" : ""),
+                    });
                 }, {});
+
                 keysWithOtherType.forEach((_, i) => {
                     object[_] = namesOfOtherType[i];
                 });
 
-                definition.definition = JSON.stringify(object);
+                definition.definition = JSON.stringify(object).replace(/"/g, "");
                 this.types.push(definition);
 
                 keysWithOtherType.forEach((_) => {
@@ -197,7 +208,7 @@ export class NestAPIGenerator {
                             [key]: value + (isNullable ? "| null" : ""),
                         });
                     }, {});
-                    definition.definition = JSON.stringify(_definition);
+                    definition.definition = JSON.stringify(_definition).replace(/"/g, "");
                     this.types.push(definition);
                 }
             }
@@ -217,9 +228,6 @@ export class NestAPIGenerator {
             services: this.services,
             types: this.types,
         });
-        // .replace(/"/g, "")
-        // .replace(/\\/g, "")
-        // .replace(/\//g, "");
         // console.log(
         //     JSON.stringify(
         //         {

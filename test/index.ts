@@ -34,8 +34,8 @@ export class MyController {
     }
 
     @Get("/something")
-    @ReturnType(Response)
-    test(@Body() request: number) {
+    @ReturnType()
+    test(@Body() request: Request) {
         return;
     }
 }
