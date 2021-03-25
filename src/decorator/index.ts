@@ -5,3 +5,5 @@ export * from "./ReturnType";
 export * from "./Module";
 export * from "./Param";
 export * from "./Nullable";
+export * from "./Query";
+export * from "./Body";

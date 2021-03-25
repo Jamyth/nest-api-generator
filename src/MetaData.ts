@@ -5,6 +5,7 @@ export const MetaData = Object.freeze({
     controllerReturnType: "controller:return",
     classProperty: "class:property",
     classType: "class:type",
-    methodParameter: "method:parameters",
+    pathParam: "method:path-parameters",
     nullableProperty: "class:property:nullable",
+    methodParameter: "method:parameters",
 });

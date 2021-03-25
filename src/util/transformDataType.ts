@@ -10,8 +10,9 @@ export function transformDataType(dataType: any, isArray: boolean = false): stri
         case "String":
         case "Number":
         case "Boolean":
-        case "Date":
             return isArray ? name.toLowerCase() + "[]" : name.toLowerCase();
+        case "Date":
+            return "Date";
     }
     // Expect all data type here can be referenced by the @Property decorator
 

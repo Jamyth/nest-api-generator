@@ -111,7 +111,10 @@ export class NestAPIGenerator {
             const path = Reflect.getMetadata("path", _);
             const name = getServiceName(path);
             const methods: ControllerMethod[] = Reflect.getMetadata(MetaData.controllerMethod, _);
-            const operations: Operation[] = methods.map((_) => getOperation(_, path));
+            const operations: Operation[] = methods.map((_) => {
+                console.log(_);
+                return getOperation(_, path);
+            });
             this.services.push({
                 name,
                 operations,
@@ -217,19 +220,19 @@ export class NestAPIGenerator {
         // .replace(/"/g, "")
         // .replace(/\\/g, "")
         // .replace(/\//g, "");
-        console.log(
-            JSON.stringify(
-                {
-                    services: this.services,
-                    types: this.types,
-                },
-                null,
-                4
-            )
-                .replace(/"/g, "")
-                .replace(/\\/g, "")
-                .replace(/\//g, "")
-        );
+        // console.log(
+        //     JSON.stringify(
+        //         {
+        //             services: this.services,
+        //             types: this.types,
+        //         },
+        //         null,
+        //         4
+        //     )
+        //         .replace(/"/g, "")
+        //         .replace(/\\/g, "")
+        //         .replace(/\//g, "")
+        // );
         const _path = path.join(this.rootDirectory, "/nest-api");
         fs.mkdirSync(_path, {recursive: true});
         const filename = `${_path}/api.txt`;

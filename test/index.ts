@@ -1,4 +1,4 @@
-import {Module, Nullable, Property, MetaData, Get, ReturnType, Param, NestAPIGenerator} from "../src";
+import {Module, Nullable, Property, Query, Get, Body, ReturnType, Param, NestAPIGenerator} from "../src";
 import {Controller} from "@nestjs/common";
 import "reflect-metadata";
 import path from "path";
@@ -29,13 +29,13 @@ class Response {
 export class MyController {
     @Get("/")
     @ReturnType(Response)
-    testNullable(gogo: IRequest, @Param("path") request: string) {
+    testNullable(@Query() query: Request, @Param("path") request: string) {
         return;
     }
 
     @Get("/something")
     @ReturnType(Response)
-    test(request: number) {
+    test(@Body() request: number) {
         return;
     }
 }
