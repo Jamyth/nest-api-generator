@@ -173,13 +173,15 @@ export class MyModule {}
 ### **controller.ts**
 
 ```ts
-import {Controller, Query, Body} from "@nestjs/common";
+import {Controller} from "@nestjs/common";
 import {
     Get,
     Post,
     Put,
     Delete,
     Param,
+    Query,
+    Body,
     ReturnType, // New Decorator
     Property, // New Decorator
 } from "nest-api-generator";
