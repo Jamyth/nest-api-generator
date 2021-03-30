@@ -8,6 +8,18 @@
     <h3 align="center">THIS IS NOT AN OFFICIAL PACKAGE</h3>
 </p>
 
+## **Notice**
+
+This is a **`backend-library`** that exposes APIs to frontend
+
+For `Frontend developer` who wants to catch the APIs and generate corresponding files, please see below package.
+
+[API Code Generator](https://github.com/Jamyth/api-code-generator)
+
+<hr>
+
+## **Introduction**
+
 A Nest JS API Generation tool, aiming to provide the complete API information for front-end developer.
 
 ## **Feature**
