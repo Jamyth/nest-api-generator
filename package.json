@@ -1,6 +1,6 @@
 {
     "name": "nest-api-generator",
-    "version": "1.2.18",
+    "version": "1.2.19",
     "main": "dist/index.js",
     "license": "MIT",
     "repository": {

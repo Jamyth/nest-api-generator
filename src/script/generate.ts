@@ -8,6 +8,7 @@ interface NestAPIGeneratorOptions {
     rootDirectory: string;
     appModule: any;
     globalPrefix?: string;
+    useReturn?: boolean;
 }
 
 export interface APIDefinition {
@@ -40,17 +41,19 @@ export class NestAPIGenerator {
     readonly appModule: any;
     readonly globalPrefix: string;
     readonly rootDirectory: string;
+    readonly useReturn: boolean;
 
     controllers: any[];
 
     services: Service[] = [];
     types: TypeDefinition[] = [];
 
-    constructor({appModule, rootDirectory, globalPrefix = ""}: NestAPIGeneratorOptions) {
+    constructor({appModule, rootDirectory, globalPrefix = "", useReturn = false}: NestAPIGeneratorOptions) {
         this.appModule = appModule;
         this.globalPrefix = globalPrefix;
         this.rootDirectory = rootDirectory;
         this.controllers = [];
+        this.useReturn = useReturn;
     }
 
     run() {
@@ -58,6 +61,12 @@ export class NestAPIGenerator {
             this.getControllers();
             this.generateService();
             this.generateTypeDefinitions();
+            if (this.useReturn) {
+                return {
+                    services: this.services,
+                    types: this.types,
+                };
+            }
             this.writeFile();
         } catch (error) {
             console.log(error);
