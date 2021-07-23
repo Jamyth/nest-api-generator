@@ -1,14 +1,10 @@
 import {RequestMethod, DefinitionType, ControllerMethod, TransformDataType} from "../type";
 import {MetaData} from "../MetaData";
-import fs from "fs";
-import path from "path";
 import chalk from "chalk";
 
-interface NestAPIGeneratorOptions {
-    rootDirectory: string;
+export interface NestAPIGeneratorOptions {
     appModule: any;
     globalPrefix?: string;
-    useReturn?: boolean;
 }
 
 export interface APIDefinition {
@@ -40,20 +36,16 @@ export class NestAPIGenerator {
     // class AppModule
     readonly appModule: any;
     readonly globalPrefix: string;
-    readonly rootDirectory: string;
-    readonly useReturn: boolean;
 
     controllers: any[];
 
     services: Service[] = [];
     types: TypeDefinition[] = [];
 
-    constructor({appModule, rootDirectory, globalPrefix = "", useReturn = false}: NestAPIGeneratorOptions) {
+    constructor({appModule, globalPrefix = ""}: NestAPIGeneratorOptions) {
         this.appModule = appModule;
         this.globalPrefix = globalPrefix;
-        this.rootDirectory = rootDirectory;
         this.controllers = [];
-        this.useReturn = useReturn;
     }
 
     run() {
@@ -61,13 +53,10 @@ export class NestAPIGenerator {
             this.getControllers();
             this.generateService();
             this.generateTypeDefinitions();
-            if (this.useReturn) {
-                return {
-                    services: this.services,
-                    types: this.types,
-                };
-            }
-            this.writeFile();
+            return {
+                services: this.services,
+                types: this.types,
+            };
         } catch (error) {
             console.log(error);
             process.exit(1);
@@ -230,30 +219,5 @@ export class NestAPIGenerator {
             types.forEach((_) => toTypeDefinition(_));
             this.types = Array.from(new Set(this.types.map((_) => JSON.stringify(_)))).map((_) => JSON.parse(_));
         });
-    }
-
-    writeFile() {
-        const content = JSON.stringify({
-            services: this.services,
-            types: this.types,
-        });
-        // console.log(
-        //     JSON.stringify(
-        //         {
-        //             services: this.services,
-        //             types: this.types,
-        //         },
-        //         null,
-        //         4
-        //     )
-        //         .replace(/"/g, "")
-        //         .replace(/\\/g, "")
-        //         .replace(/\//g, "")
-        // );
-        const _path = path.join(this.rootDirectory, "/nest-api");
-        fs.mkdirSync(_path, {recursive: true});
-        const filename = `${_path}/api.txt`;
-        console.info(chalk`{green.bold [NestAPIGenerator]} {white.bold writing to ${filename}}`);
-        fs.writeFileSync(filename, content, {encoding: "utf-8"});
     }
 }

@@ -7,6 +7,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2021-07-23
+
+### Changed
+
+-   Refactor NestAPIModule
+    -   no longer output a text file, return a JSON instead
+    -   support runtime API definition generation
+-   Changed Constructor Options in NestAPIGenerator class
+    -   removed `rootDirectory` & `useReturn`
+
 ## [1.2.18] - 2021-03-25
 
 ### Changed

@@ -430,10 +430,8 @@ import {NestAPIModule} from "nest-api-generator";
 @Module({
     imports: [
         NestAPIModule.forRoot({
-            // The path you defined in API Generation Script section
-            // directory only
-            // '/nest-api' is no need
-            path: path.join(__dirname, ".."),
+            appModule: AppModule,
+            globalPrefix: "/v1",
         }),
     ],
 })
