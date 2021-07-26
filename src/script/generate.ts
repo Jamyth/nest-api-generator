@@ -170,7 +170,7 @@ export class NestAPIGenerator {
                         name = type.name + "$" + dataType.name + (dataType.isArray ? "[]" : "");
                         return name + (isNullable ? " | null" : "");
                     }
-                    name = dataType.name;
+                    name = dataType.name + (dataType.isArray ? "[]" : "");
                     return name + (isNullable ? " | null" : "");
                 });
 

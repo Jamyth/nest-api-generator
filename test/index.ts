@@ -1,14 +1,15 @@
-import {Module, Nullable, Property, Query, Get, Body, ReturnType, Param, NestAPIGenerator} from "../src";
+import {Module, Nullable, Property, Query, Get, Body, ReturnType, Param, NestAPIGenerator, Enumeration} from "../src";
 import {Controller} from "@nestjs/common";
 import "reflect-metadata";
 import path from "path";
 
-class Request {
-    @Property("pageIndex", Number)
-    pageIndex: number;
-}
-class IRequest {
-    pageIndex: number;
+@Enumeration()
+class EnumTest {
+    @Property("a", String)
+    static a = "a";
+
+    @Property("b", String)
+    static b = "b";
 }
 
 class Customer {
@@ -18,6 +19,19 @@ class Customer {
     @Nullable()
     @Property("age", Number)
     age: number | null;
+
+    @Property("key", EnumTest, true)
+    key: EnumTest[];
+}
+class Request {
+    @Property("pageIndex", Number)
+    pageIndex: number;
+
+    @Property("customer", Customer)
+    customer: Customer;
+}
+class IRequest {
+    pageIndex: number;
 }
 
 class Response {
@@ -50,7 +64,7 @@ class MyModule {}
 })
 class AppModule {}
 
-new NestAPIGenerator({
-    rootDirectory: path.join(__dirname, ""),
+const definition = new NestAPIGenerator({
     appModule: AppModule,
 }).run();
+console.info(definition);
