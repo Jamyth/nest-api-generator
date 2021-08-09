@@ -46,7 +46,6 @@ export class MyController {
     testNullable(@Query() query: Request, @Param("path") request: string) {
         return;
     }
-
     @Get("/something")
     @ReturnType()
     test(@Body() request: Request) {

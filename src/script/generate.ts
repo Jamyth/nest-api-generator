@@ -117,7 +117,7 @@ export class NestAPIGenerator {
             console.info(chalk`{green.bold [NestAPIGenerator]} {white.bold generating service ${_.name} (${i + 1})}`);
             const path = Reflect.getMetadata("path", _);
             const name = getServiceName(path);
-            const methods: ControllerMethod[] = Reflect.getMetadata(MetaData.controllerMethod, _);
+            const methods: ControllerMethod[] = Reflect.getMetadata(MetaData.controllerMethod, _) ?? [];
             const operations: Operation[] = methods.map((_) => getOperation(_, path));
             this.services.push({
                 name,
@@ -213,7 +213,7 @@ export class NestAPIGenerator {
         };
 
         controllers.forEach((_) => {
-            const methods: ControllerMethod[] = Reflect.getMetadata(MetaData.controllerMethod, _);
+            const methods: ControllerMethod[] = Reflect.getMetadata(MetaData.controllerMethod, _) ?? []; // In case there are no methods
             const nested_types: TransformDataType[][] = methods.map(getTransformDataType);
             const types = nested_types.reduce(flat, []);
             types.forEach((_) => toTypeDefinition(_));
