@@ -4,6 +4,7 @@ import {NestAPIGenerator} from "../script/generate";
 
 @Controller("_system")
 export class NestAPIController {
+    // eslint-disable-next-line @typescript-eslint/no-parameter-properties -- temp disable
     constructor(@Inject("APP_MODULE") readonly appModule: any, @Inject("GLOBAL_PREFIX") readonly globalPrefix: string | undefined) {}
     @Get("/api")
     getAPI(): APIDefinition {

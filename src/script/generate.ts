@@ -1,4 +1,4 @@
-import {RequestMethod, DefinitionType, ControllerMethod, TransformDataType} from "../type";
+import type {RequestMethod, DefinitionType, ControllerMethod, TransformDataType} from "../type";
 import {MetaData} from "../MetaData";
 import chalk from "chalk";
 
@@ -58,7 +58,7 @@ export class NestAPIGenerator {
                 types: this.types,
             };
         } catch (error) {
-            console.log(error);
+            console.info(error);
             process.exit(1);
         }
     }
@@ -148,6 +148,7 @@ export class NestAPIGenerator {
             return result;
         };
 
+        // eslint-disable-next-line sonarjs/cognitive-complexity -- refactor later
         const toTypeDefinition = (type: TransformDataType, prefix?: string) => {
             const _prefix = prefix ? prefix + "$" : "";
             const definition: TypeDefinition = {

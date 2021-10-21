@@ -1,4 +1,5 @@
-import {Module as NestModule, ModuleMetadata} from "@nestjs/common";
+import type {ModuleMetadata} from "@nestjs/common";
+import {Module as NestModule} from "@nestjs/common";
 import {ReflectUtil} from "../reflect";
 
 export function Module(moduleMetaData: ModuleMetadata): ClassDecorator {

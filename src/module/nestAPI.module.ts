@@ -6,7 +6,7 @@ interface NestAPIModuleConfig extends NestAPIGeneratorOptions {}
 
 @Module({})
 export class NestAPIModule {
-    public static forRoot({appModule, globalPrefix}: NestAPIModuleConfig) {
+    static forRoot({appModule, globalPrefix}: NestAPIModuleConfig) {
         return {
             module: NestAPIModule,
             controllers: [NestAPIController],

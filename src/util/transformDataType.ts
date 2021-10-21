@@ -20,13 +20,12 @@ export function transformDataType(dataType: any, isArray: boolean = false): stri
     const type = Reflect.getMetadata(MetaData.classType, dataType) ?? "interface";
     const object: Record<string, any> | undefined = Reflect.getMetadata(MetaData.classProperty, dataType);
     if (object && name) {
-        const transformedDataType: TransformDataType = {
+        return {
             name,
             type,
             isArray,
             nullableKeys,
             body: object,
         };
-        return transformedDataType;
     }
 }

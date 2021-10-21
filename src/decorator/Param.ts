@@ -1,4 +1,5 @@
-import {Param as NestParam, PipeTransform, Type} from "@nestjs/common";
+import type {PipeTransform, Type} from "@nestjs/common";
+import {Param as NestParam} from "@nestjs/common";
 import {Utility} from "../util";
 
 export function Param(): ParameterDecorator;

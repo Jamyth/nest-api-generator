@@ -1,5 +1,5 @@
 import {Utility} from "../util";
-import {ControllerMethod, MethodParameter, RequestMethod, TransformDataType} from "../type";
+import type {ControllerMethod, MethodParameter, RequestMethod, TransformDataType} from "../type";
 import {ReflectUtil} from "../reflect";
 
 export function createService(target: Object, methodName: string | symbol, path: string, requestMethod: RequestMethod) {
@@ -35,7 +35,7 @@ export function createService(target: Object, methodName: string | symbol, path:
 
     const service: ControllerMethod = {
         method: requestMethod,
-        name: methodName as string,
+        name: String(methodName),
         path,
         pathParams,
         pathParamInterface,
@@ -47,12 +47,14 @@ export function createService(target: Object, methodName: string | symbol, path:
     ReflectUtil.defineControllerMethods(controllerMethods, target.constructor);
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity -- refactor later
 function getPathParams(pathParameters: MethodParameter[], transformedParameters: (string | TransformDataType | undefined)[]) {
     let pathParamInterface: string | TransformDataType | null = null;
     let pathParams: {name: string; type: string}[] = [];
 
     for (let i = 0; i < pathParameters.length; i++) {
         const param = pathParameters[i];
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- checked
         const parameter = transformedParameters[param.index]!;
         const nullableKeys = typeof parameter === "string" ? [] : parameter.nullableKeys;
         const propertyKey = param.property;
