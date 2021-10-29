@@ -90,7 +90,7 @@ function defineBodyOrQueryParameters(parameters: MethodParameter, classConstruct
  */
 function getMethodReturn(target: object, methodName: string | symbol): any {
     const returnType = getMetadata(MetaData.controllerReturnType, target, methodName);
-    if (!returnType) {
+    if (returnType === undefined) {
         throw new Error(`Return Type for method -- ${String(methodName)} is not found`);
     }
     return returnType;
