@@ -72,9 +72,9 @@ export class NestAPIGenerator {
         const modules: any[] = imports.filter((_) => Reflect.getMetadata(MetaData.moduleType, _) !== undefined);
         const controllers: any[] = [];
         modules.forEach((_) => {
-            const controller = Reflect.getMetadata("controllers", _)[0];
+            const controller = Reflect.getMetadata("controllers", _);
             if (controller) {
-                controllers.push(controller);
+                controllers.push(...controller);
             }
         });
         this.controllers = controllers;
@@ -85,7 +85,11 @@ export class NestAPIGenerator {
         const controllers = this.controllers;
 
         const getServiceName = (path: string) => {
-            return path.charAt(0).toUpperCase() + path.slice(1) + "AJAXService";
+            const PascalCase = path
+                .split("-")
+                .map((_) => _.charAt(0).toUpperCase() + _.slice(1))
+                .join("");
+            return PascalCase + "AJAXService";
         };
 
         const getType = (type: string | TransformDataType): string => {
@@ -117,6 +121,7 @@ export class NestAPIGenerator {
             console.info(chalk`{green.bold [NestAPIGenerator]} {white.bold generating service ${_.name} (${i + 1})}`);
             const path = Reflect.getMetadata("path", _);
             const name = getServiceName(path);
+            console.info(name);
             const methods: ControllerMethod[] = Reflect.getMetadata(MetaData.controllerMethod, _) ?? [];
             const operations: Operation[] = methods.map((_) => getOperation(_, path));
             this.services.push({

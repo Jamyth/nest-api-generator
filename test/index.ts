@@ -39,6 +39,13 @@ class Response {
     data: Customer;
 }
 
+@Controller("third-party-controller")
+export class ThirdPartyController {
+    @Get("/test")
+    @ReturnType(Response)
+    test() {}
+}
+
 @Controller("controller")
 export class MyController {
     @Get("/")
@@ -54,7 +61,7 @@ export class MyController {
 }
 
 @Module({
-    controllers: [MyController],
+    controllers: [MyController, ThirdPartyController],
 })
 class MyModule {}
 
