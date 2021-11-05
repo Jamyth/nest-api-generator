@@ -121,7 +121,6 @@ export class NestAPIGenerator {
             console.info(chalk`{green.bold [NestAPIGenerator]} {white.bold generating service ${_.name} (${i + 1})}`);
             const path = Reflect.getMetadata("path", _);
             const name = getServiceName(path);
-            console.info(name);
             const methods: ControllerMethod[] = Reflect.getMetadata(MetaData.controllerMethod, _) ?? [];
             const operations: Operation[] = methods.map((_) => getOperation(_, path));
             this.services.push({
@@ -129,6 +128,24 @@ export class NestAPIGenerator {
                 operations,
             });
         });
+
+        const serviceNames = Array.from(new Set([...this.services.map((_) => _.name)]));
+        const services: Service[] = serviceNames.map((name) => {
+            const operations = this.services
+                .filter((_) => _.name === name)
+                .map((_) => _.operations)
+                .flat();
+
+            if (new Set([...operations.map((_) => _.name)]).size !== operations.length) {
+                throw new Error(`Unable to generate service ${name}, duplicate method found`);
+            }
+
+            return {
+                name,
+                operations,
+            };
+        });
+        this.services = services;
     }
 
     generateTypeDefinitions() {

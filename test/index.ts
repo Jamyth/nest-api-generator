@@ -39,11 +39,11 @@ class Response {
     data: Customer;
 }
 
-@Controller("third-party-controller")
+@Controller("controller")
 export class ThirdPartyController {
     @Get("/test")
     @ReturnType(Response)
-    test() {}
+    test123() {}
 }
 
 @Controller("controller")
@@ -73,4 +73,4 @@ class AppModule {}
 const definition = new NestAPIGenerator({
     appModule: AppModule,
 }).run();
-console.info(definition);
+console.log(JSON.stringify(definition, null, 2));
